@@ -21,6 +21,8 @@ You will be asked to enter your email adress and phone number and age.
 **When entering the phone number don't enter the leading zero or any spaces, meaning 0170 123456 will become 170123456.**
 This is because the country code is already set it the form.
 
+If you find yourself in a lot of waiting rooms, you might try other values for the SUBSERVER_LESS list (check SUBSERVER_MORE for all possible values).
+
 If you're lucky and get a notification with a 6 digit code, the program will ask you to enter it in the form of xxx-xxx.
 
 ## checkAppointments.py
