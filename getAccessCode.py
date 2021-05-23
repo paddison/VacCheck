@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
+from pathlib import Path
 
 import platform
 
@@ -28,15 +29,28 @@ except:
 SUBSERVERS_LESS = ['001', '005', '002']
 SUBSERVES_MORE = ['001', '005', '002', '003', '229', '356', '357']
 
-# enter user data 
+# enter user data or read from file
+# Read user data from myData.txt if it exists
+# File Format (cf. myDataDummie.txt): 
+#       first line: email-adress
+#       second line: phone number without leading 0
+#       third line: age 
 #######################
-# IMPORTANT!! 
-# PHONE NUMBER CANNOT START WITH LEADING 0 BECAUSE IT IS SET AUTOMATICALLY IN THE FORM
-# 0162123215 NEEDS TO BECOME 162123215
-#######################
-EMAIL = input('Enter email: ')
-TEL = input('Enter phone (no spaces, without leading 0): ')
-AGE = input('Enter age: ')
+user_data_p = Path('./data/myData.txt')
+if user_data_p.exists():
+    with open(user_data_p, "r") as f:
+        user_data = f.read().splitlines()
+        EMAIL = user_data[0]
+        TEL = user_data[1]
+        AGE = user_data[2]
+else:
+    EMAIL = input('Enter email: ')
+    TEL = input('Enter phone (no spaces, without leading 0): ')
+    AGE = input('Enter age: ')
+    user_data = [EMAIL, TEL, AGE]
+    with open(user_data_p, "w") as f:
+        f.writelines([d+"\n" for d in user_data])
+        
 
 # These are used to check if you where able to get a code
 # and updated to plz that still need to be checked
