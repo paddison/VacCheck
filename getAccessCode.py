@@ -47,6 +47,10 @@ else:
     EMAIL = input('Enter email: ')
     TEL = input('Enter phone (no spaces, without leading 0): ')
     AGE = input('Enter age: ')
+    user_data = [EMAIL, TEL, AGE]
+    with open(user_data_p, "w") as f:
+        f.writelines([d+"\n" for d in user_data])
+        
 
 # These are used to check if you where able to get a code
 # and updated to plz that still need to be checked
