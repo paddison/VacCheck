@@ -4,6 +4,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from pathlib import Path
+import subprocess
+from datetime import datetime
 
 import platform
 
@@ -35,19 +37,30 @@ SUBSERVES_MORE = ['001', '005', '002', '003', '229', '356', '357']
 #       first line: email-adress
 #       second line: phone number without leading 0
 #       third line: age 
+#       fourth line: path/to/script
 #######################
-user_data_p = Path('./data/myData.txt')
+user_data_p = Path('data/myData.txt')
 if user_data_p.exists():
     with open(user_data_p, "r") as f:
         user_data = f.read().splitlines()
         EMAIL = user_data[0]
         TEL = user_data[1]
         AGE = user_data[2]
+        try:
+            if user_data[3] != '':
+                SCRIPT = Path(user_data[3])
+                if not SCRIPT.exists():
+                    SCRIPT = None
+            else:
+                SCRIPT = None
+        except:
+            SCRIPT = None
 else:
     EMAIL = input('Enter email: ')
     TEL = input('Enter phone (no spaces, without leading 0): ')
     AGE = input('Enter age: ')
-    user_data = [EMAIL, TEL, AGE]
+    SCRIPT = input('Enter path to shell script to be executed every 3 minutes (leave blank, if there is none): ')
+    user_data = [EMAIL, TEL, AGE, SCRIPT]
     with open(user_data_p, "w") as f:
         f.writelines([d+"\n" for d in user_data])
         
@@ -61,9 +74,16 @@ SYSTEM = "linux" if platform.system() == 'Linux' else 'macOS'
 
 
 repeat = True
+start_time = datetime.now()
 while repeat:
     with webdriver.Chrome(executable_path='./' + SYSTEM + '/chromedriver') as driver:   
         for plz in ALL_PLZ:
+
+            if SCRIPT is not None:
+                if (datetime.now() - start_time).seconds/60 > 3:
+                    subprocess.run(['sh', str(SCRIPT)])
+                    start_time = datetime.now()
+            
             success = False
             for subserver in SUBSERVERS_LESS:
                 if success:
