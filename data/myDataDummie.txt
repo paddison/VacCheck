@@ -1,3 +1,4 @@
 mymail@mail.com
 170123456
 99
+path/to/script
