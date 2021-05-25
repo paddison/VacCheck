@@ -39,6 +39,3 @@ First create `data/accessCodes.txt` and enter the link you received in the email
 
  # Notes
  Make sure to use a proxi and change your IP adress regularly, because the server will block you after a while.
-
- # License
- (c) 2021 Patrick Baumann
